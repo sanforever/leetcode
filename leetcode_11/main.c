@@ -15,7 +15,39 @@
 #include <stdlib.h>
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
+
 int maxArea(int* height, int heightSize) {
+    int i, j, cur;
+    int area, max_area;
+
+    max_area = 0;
+    i = 0;
+    j = heightSize - 1;
+    while(i < j) {
+	area = (j - i) * MIN(height[i], height[j]);
+	if(area > max_area) {
+	    max_area = area;
+	}
+	
+	if(height[i] < height[j]) {
+	    cur = i;
+	    i++;
+	    while(height[i] < height[cur] && i < j) {
+		i++;
+	    }
+	} else {
+	    cur = j;
+	    j--;
+	    while(height[j] < height[cur] && i < j) {
+		j--;
+	    }
+	}	
+    }
+    
+    return max_area;
+}
+
+int maxArea_old(int* height, int heightSize) {
     int i, j;
     int area, max_area, max_end;
     int find_larger, next;
@@ -53,10 +85,11 @@ int maxArea(int* height, int heightSize) {
  * 
  */
 int main(int argc, char** argv) {
-    //int height_array[] = {3, 1, 9, 2, 1, 8, 0, 6};
+    int height_array[] = {3, 1, 9, 2, 1, 8, 0, 6};
     //int height_array[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     //int height_array[] = {2, 3, 4, 5, 18, 17, 6};
-    int height_array[] = {9, 6, 14, 11, 2, 2, 4, 9, 3, 8};
+    //int height_array[] = {9, 6, 14, 11, 2, 2, 4, 9, 3, 8};
+    printf("%d\n", maxArea_old(height_array, sizeof(height_array) / sizeof(int)));
     printf("%d\n", maxArea(height_array, sizeof(height_array) / sizeof(int)));
     
     return (EXIT_SUCCESS);
